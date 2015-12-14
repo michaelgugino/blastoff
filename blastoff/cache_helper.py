@@ -14,3 +14,6 @@ class CacheHelper(object):
         for i in range(0,len(kl)):
             self.cache_dict[kl[i]] = res[i]
         print self.cache_dict
+
+    def put_in_cache(self,kd):
+        self.redcon.mset(kd)

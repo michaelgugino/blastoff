@@ -7,7 +7,7 @@ class Index(pylw.resource.DefaultResource):
         signed_cookies = resp.get_signed_cookie('testk')
         ch = user_objects['ch']
         cdict = ch.cache_dict
-        resp.body = cdict['site-header'] + cdict['index-body'] + cdict['site-footer']
+        resp.body = cdict['templates:site-header'] + cdict['templates:index'] + cdict['templates:site-footer']
         resp.add_signed_cookie('testk','value1')
         resp.add_cookie('unsigned_testk','value1')
         resp.add_header('Content-Type','text/html')

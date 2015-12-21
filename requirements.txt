@@ -1,0 +1,4 @@
+itsdangerous==0.24
+pylw==0.1.10
+redis==2.10.5
+wheel==0.24.0

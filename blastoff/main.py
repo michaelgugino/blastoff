@@ -15,7 +15,7 @@
 # limitations under the License.
 
 '''This is the main script, used to start the application'''
-
+import os, glob
 import pylw.app as app
 import pylw.routing
 import views.index_view
@@ -23,8 +23,21 @@ import respmod
 import cache_helper
 import redis
 
-redpool = redis.ConnectionPool(
-    host='localhost', db=0)
+from jinja2 import Environment, PackageLoader
+jenv = Environment(loader=PackageLoader('blastoff', 'jinja_templates'))
+
+def get_templates(jtemplate_dict):
+    jtemplatenames = glob.glob(os.path.join('blastoff', 'jinja_templates', '*.html'))
+    for temp in jtemplatenames:
+        tsplit = temp.split('/')
+        ti = tsplit[len(tsplit) - 1]
+        jt = jenv.get_template(ti)
+        jtemplate_dict[ti] = jt
+
+jtemplate_dict = dict()
+get_templates(jtemplate_dict)
+
+redpool = redis.ConnectionPool(host='localhost', db=0)
 redcon = redis.Redis(connection_pool=redpool)
 
 config_dict = {
@@ -36,7 +49,8 @@ ch = cache_helper.CacheHelper(redcon=redcon)
 kl = ['templates:site-header','templates:index','templates:site-footer']
 ch.load_from_cache(kl)
 user_objects = {
-    'ch' : ch
+    'ch' : ch,
+    'jtemplate_dict' : jtemplate_dict
 }
 
 myapp = app.App(secret_key="testing", config_dict=config_dict, user_objects=user_objects)

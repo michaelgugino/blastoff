@@ -2,7 +2,7 @@
 import blastoff.cache_helper as cache_helper
 import os,glob
 import redis
-
+import sample_data
 
 redpool = redis.ConnectionPool(
     host='localhost', db=0)

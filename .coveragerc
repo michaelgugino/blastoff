@@ -1,0 +1,8 @@
+[run]
+branch = True
+source = blastoff
+omit = blastoff/tests*,blastoff/util*
+[report]
+fail_under = 00
+show_missing = True
+

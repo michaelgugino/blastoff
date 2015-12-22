@@ -20,6 +20,7 @@ try:
     CYTHON = True
 except ImportError:
     CYTHON = False
+    ext_modules = None
 
 if CYTHON:
     def list_modules(dirname):

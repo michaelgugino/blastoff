@@ -2,26 +2,25 @@
 import pylw.resource
 
 
-class Index(pylw.resource.DefaultResource):
+class NewPost(pylw.resource.DefaultResource):
     '''The index of our site.'''
 
     def on_get(self,req,resp,user_objects=None):
         signed_cookies = resp.get_signed_cookie('testk')
         ch = user_objects['ch']
         jtd = user_objects['jtemplate_dict']
-        blog_posts = []
-        blog_posts.append(jtd['post.html'].render())
 
-        index_dict = {
-            'blog_posts' : blog_posts,
-            'blog_title' : 'Blog Index',
-            'blog_description' : 'Blastoff! blog'
-        }
-        tempindex = jtd['index.html'].render(**index_dict)
+        tempbody = jtd['upload_widget.html'].render()
+        #tempbody = "testing"
         #print tempindex
         cdict = ch.cache_dict
         #resp.body = cdict['templates:site-header'] + cdict['templates:index'] + cdict['templates:site-footer']
-        resp.body = cdict['templates:site-header'] + str(tempindex) + cdict['templates:site-footer']
+        #resp.body = cdict['templates:site-header'] + str(tempbody) + cdict['templates:site-footer']
+        try:
+            resp.body = cdict['templates:site-header'] + str(tempbody) + cdict['templates:site-footer']
+        except Exception as ex:
+            print ex
+            resp.body = 'bad'
         resp.add_signed_cookie('testk','value1')
         resp.add_cookie('unsigned_testk','value1')
         resp.add_header('Content-Type','text/html')

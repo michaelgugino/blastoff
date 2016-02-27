@@ -20,6 +20,7 @@ import pylw.app as app
 import pylw.routing
 import views.index_view
 import views.new_post_view
+import views.upload_view
 import respmod
 import cache_helper
 import redis
@@ -34,7 +35,7 @@ def get_templates(jtemplate_dict):
         ti = tsplit[len(tsplit) - 1]
         jt = jenv.get_template(ti)
         jtemplate_dict[ti] = jt
-        
+
 
 jtemplate_dict = dict()
 get_templates(jtemplate_dict)
@@ -59,4 +60,5 @@ myapp = app.App(secret_key="testing", config_dict=config_dict, user_objects=user
 
 myapp.router = pylw.routing.CRouter()
 myapp.router.add_path('/new_post', views.new_post_view.NewPost())
+myapp.router.add_path('/upload', views.upload_view.FormUpload())
 myapp.add_hard_coded_path('/',views.index_view.Index())

@@ -1,23 +1,37 @@
 '''This is the index view'''
 import pylw.resource
 
+import uuid
 
 class NewPost(pylw.resource.DefaultResource):
     '''The index of our site.'''
 
     def on_get(self,req,resp,user_objects=None):
+
+        #Check the session here.
         signed_cookies = resp.get_signed_cookie('testk')
+        #check for user logged in session
+        username = resp.get_signed_cookie('username')
+
+        if username is None:
+            resp.status = '503 Unauthorized'
+            resp.body = 'Unauthorized, you must be logged in'
+            resp.add_header('Content-Type','text/html')
+            resp.add_signed_cookie('username','testadmin')
+            return
+
+        #Load things from userobjects
         ch = user_objects['ch']
         jtd = user_objects['jtemplate_dict']
-
-        tempbody = jtd['upload_widget.html'].render()
-        #tempbody = "testing"
-        #print tempindex
         cdict = ch.cache_dict
-        #resp.body = cdict['templates:site-header'] + cdict['templates:index'] + cdict['templates:site-footer']
-        #resp.body = cdict['templates:site-header'] + str(tempbody) + cdict['templates:site-footer']
+
+
+        editortext = "[b]Enter your job description here[/b]. [color=#B22222]Javascript and HTML are prohibited[/color]. [color=#008000]BBCode is valid.[/color]"
         try:
-            resp.body = cdict['templates:site-header'] + str(tempbody) + cdict['templates:site-footer']
+            upload_widget = jtd['upload_widget.html'].render()
+            body_html = jtd['new_post.html'].render(editortext=editortext, upload_widget=upload_widget)
+            header_html = jtd['newpost-header.html'].render()
+            resp.body = str(header_html) + str(body_html) + cdict['templates:site-footer']
         except Exception as ex:
             print ex
             resp.body = 'bad'

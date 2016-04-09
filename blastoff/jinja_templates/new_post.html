@@ -1,3 +1,59 @@
+<body>
+<script src="//cdn.ckeditor.com/4.4.4/full-all/ckeditor.js"></script>
+<div id="main">
+	<div class="container">
+		<h2>Create a new post</h2>
+		     <form id="answerform" name="input" action="/new_post" method="post">
+		     <label><h3>Category:</h3></label>
+		     <br />
+		     <label><h3>Title:</h3></label>
+            <textarea id="jobtext" rows="20" name="jobtext" form="answerform">{{ editortext }}</textarea>
+
+
+<script>
+$(function() {
+    // Replace all textarea's
+    // with SCEditor
+    $("textarea").sceditor({
+        plugins: "bbcode",
+        toolbarExclude: "table,emoticon,youtube,justify,bulletlist,orderedlist,indent,outdent",
+	style: "minified/jquery.sceditor.default.min.css"
+    });
+});
+</script>
+            <input type="hidden" value="testing" name="jobtext">
+                    <h3>Posting Rules:</h3>
+        <ol>
+        	<li>No javascript or html permitted</li>
+
+        <br />
+            <span id="warn"><input type="submit" value="Preview">All Posts Will Be Moderated!</span>
+            {% if postuuid is defined %}
+            <input type="hidden" value="{{ postuuid }}" name="postuuid">
+            {% endif %}
+        </form>
+
+        {% if previewtext is defined %}
+        <h2>Preview:</h2>
+		<div id="previewcontain">
+        <div id="previewpane">
+
+        				{% autoescape false %}
+    					{{ previewtext }}
+						{% endautoescape %}
+
+
+        </div>
+        </div>
+        <form id="answerform" name="input" action='/submitpost' method="post">
+        <input type="hidden" value="1" name="save">
+        <input type="hidden" value="{{ postuuid }}" name="postuuid">
+        <span id="warn"><input type="submit" value="Post!">All Posts Will Be Moderated!</span>
+		{% endif %}
+	</div>
+</div>
 <div class="blog-post">
-{{ upload_widget }}
+	{% autoescape false %}
+	{{ upload_widget }}
+	{% endautoescape %}
 </div><!-- /.blog-post -->

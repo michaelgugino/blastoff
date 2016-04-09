@@ -26,7 +26,10 @@ import cache_helper
 import redis
 
 from jinja2 import Environment, PackageLoader
-jenv = Environment(loader=PackageLoader('blastoff', 'jinja_templates'))
+jenv = Environment(
+            autoescape=True,
+            extensions=['jinja2.ext.autoescape'],
+            loader=PackageLoader('blastoff', 'jinja_templates'))
 
 def get_templates(jtemplate_dict):
     jtemplatenames = glob.glob(os.path.join('blastoff', 'jinja_templates', '*.html'))

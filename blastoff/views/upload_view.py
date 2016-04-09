@@ -22,7 +22,6 @@ class FormUpload(pylw.resource.DefaultResource):
 
             file_data = formdata['newfile'].file.read()
             filename = formdata['newfile'].filename
-
             # write the content of the uploaded file to a local file
             target = os.path.join('blastoff','media', filename)
             try:
@@ -31,25 +30,19 @@ class FormUpload(pylw.resource.DefaultResource):
                 f.close()
             except Exception as ex:
                 print ex
-
+#TODO: implement delete function
+#TODO: implement thumbnail function
+#TODO: handle duplicate filename uploads
         res = {
                 "files": [
                   {
-                    "name": "picture1.jpg",
+                    "name": filename,
                     "size": 902604,
-                    "url": "http:\/\/example.org\/files\/picture1.jpg",
-                    "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture1.jpg",
-                    "deleteUrl": "http:\/\/example.org\/files\/picture1.jpg",
+                    "url": "http:\/\/localhost:8000/media/" + filename,
+                    "thumbnailUrl": "http:\/\/localhost:8000/media/" + filename,
+                    "deleteUrl": "http:\/\/localhost:8000/media/" + filename,
                     "deleteType": "DELETE"
                   },
-                  {
-                    "name": "picture2.jpg",
-                    "size": 841946,
-                    "url": "http:\/\/example.org\/files\/picture2.jpg",
-                    "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture2.jpg",
-                    "deleteUrl": "http:\/\/example.org\/files\/picture2.jpg",
-                    "deleteType": "DELETE"
-                  }
                 ]}
         resp.body = json.dumps(res)
         resp.add_header('Content-Type','application/json')

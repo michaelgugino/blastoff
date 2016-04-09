@@ -6,7 +6,8 @@ from werkzeug.wsgi import SharedDataMiddleware
 myapp = main.myapp
 myapp = SharedDataMiddleware(myapp, {
     '/static': os.path.join(os.path.dirname(__file__), 'blastoff','static'),
-    '/js': os.path.join(os.path.dirname(__file__), 'blastoff','js')
+    '/js': os.path.join(os.path.dirname(__file__), 'blastoff','js'),
+    '/media': os.path.join(os.path.dirname(__file__), 'blastoff','media')
 })
 
 

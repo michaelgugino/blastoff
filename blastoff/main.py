@@ -52,7 +52,8 @@ config_dict = {
 }
 
 ch = cache_helper.CacheHelper(redcon=redcon)
-kl = ['templates:site-header','templates:index','templates:site-footer']
+kl = ['templates:site-header','templates:index','templates:site-footer',
+        'blog_title', 'sidebar_widgets', 'top_nav', 'blog_description']
 ch.load_from_cache(kl)
 user_objects = {
     'ch' : ch,

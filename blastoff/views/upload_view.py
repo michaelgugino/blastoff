@@ -2,7 +2,7 @@
 import pylw.resource
 import cgi
 import json
-import os
+import os, sys
 
 
 class FormUpload(pylw.resource.DefaultResource):
@@ -17,11 +17,14 @@ class FormUpload(pylw.resource.DefaultResource):
         formdata = cgi.FieldStorage(
             environ=req.raw_env,
             fp=req.raw_env['wsgi.input'])
-        print formdata
+        #print formdata
+        #TODO: add elif if this statement is not true.
         if 'newfile' in formdata and formdata['newfile'].filename != '':
-
             file_data = formdata['newfile'].file.read()
             filename = formdata['newfile'].filename
+#TODO: this file size is off by a few bytes.
+            file_size = sys.getsizeof(file_data)
+
             # write the content of the uploaded file to a local file
             target = os.path.join('blastoff','media', filename)
             try:
@@ -30,6 +33,8 @@ class FormUpload(pylw.resource.DefaultResource):
                 f.close()
             except Exception as ex:
                 print ex
+            print file_size
+
 #TODO: implement delete function
 #TODO: implement thumbnail function
 #TODO: handle duplicate filename uploads
@@ -37,7 +42,7 @@ class FormUpload(pylw.resource.DefaultResource):
                 "files": [
                   {
                     "name": filename,
-                    "size": 902604,
+                    "size": file_size,
                     "url": "http:\/\/localhost:8000/media/" + filename,
                     "thumbnailUrl": "http:\/\/localhost:8000/media/" + filename,
                     "deleteUrl": "http:\/\/localhost:8000/media/" + filename,

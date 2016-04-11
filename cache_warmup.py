@@ -19,3 +19,4 @@ for name in filenames:
     kd['templates:'+basename] = data
 
 ch.put_in_cache(kd)
+ch.put_in_cache(sample_data.sample_dict)
